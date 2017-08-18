@@ -18,7 +18,7 @@ browser = webdriver.Firefox()
 wait = WebDriverWait(browser,10)
 
 def initial_lines():
-    path = r'D:\Users\yuguiyang\Documents\GitHub\python_demo\code\crawler\1688_line.txt'
+    path = r'1688_line.txt'
     
     file = open(path,'r')
     
@@ -82,15 +82,21 @@ def main():
     
     lines = initial_lines()
     
-    for line_from in lines:
-        for line_to in lines:
-            p_url = p_url_template.format(line_from[0],line_from[1],line_from[2],line_to[0],line_to[1],line_to[2])
-            
-            try :    
+    try :   
+    
+        for line_from in lines:
+            for line_to in lines:
+                p_url = p_url_template.format(line_from[0],line_from[1],line_from[2],line_to[0],line_to[1],line_to[2])
+        
                 #循环，按行读取文件
-                parse_current_page(p_url)    
-            finally :
-                browser.quit()
+                parse_current_page(p_url) 
+            break
+    except Exception as e:
+        print('something error')
+        print(e)
+        
+    finally :
+        browser.quit()
     
 
 #统一转换时效为小时

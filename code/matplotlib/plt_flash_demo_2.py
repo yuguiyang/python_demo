@@ -25,6 +25,7 @@ fig,axes = plt.subplots()
 
 axes.bar(x,people,facecolor='green') 
 axes.set_title(u'Round: '+str(game_round))
+axes.grid(True,axis='y')
 
 #根据下标i,随机返回另一个下标
 def give_to(i):
@@ -36,6 +37,7 @@ def give_to(i):
     return i_to
 
 #重新绘制图形
+#1.当拥有的钱为0，则不再支出，但可以收入
 def game(obj): 
     global people
     global game_round
@@ -63,11 +65,36 @@ def game(obj):
         #重新绘图
         axes.set_title(u'Round: '+str(game_round))
         axes.bar(x,sorted(people),facecolor='green')
+        axes.grid(True,axis='y')
     else :
         pass
 
+#2.允许借贷的情况，及拥有的钱可以为负
+def game2(obj): 
+    global people
+    global game_round
 
+    #还不知道咋让循环停止，就在这判断下
+    if game_round < game_max_round:
+        #清空当前轴
+        plt.cla()
+        
+        #遍历100个人
+        for i in range(total_people):
+            #每个人拿出1块钱，给另一个人
+            people[i] = people[i] - 1
+            people_to = give_to(i)
+            people[people_to] = people[people_to] + 1
+         
+        
+        game_round += 1
+        #重新绘图
+        axes.set_title(u'Round: '+str(game_round))
+        axes.bar(x,sorted(people),facecolor='green')
+        axes.grid(True,axis='y')
+    else :
+        pass
 #循环调用游戏
-ani = animation.FuncAnimation(fig, game, interval=0.01)  
+ani = animation.FuncAnimation(fig, game2, interval=0.1)  
 
 plt.show() 
