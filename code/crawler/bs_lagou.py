@@ -11,6 +11,7 @@ import math
 import csv
 import time
 import os
+from http import cookiejar
 
 total_page = 1
 current_page = 1
@@ -24,15 +25,26 @@ def update_total_page(page_size,totalCount):
 
 #解析HTML页面
 def parse_html(url,headers,post_data):
+    #声明一个CookieJar对象实例来保存cookie
+    cookie = cookiejar.MozillaCookieJar()
+    
+    cookie.load('cookie.txt', ignore_discard=True, ignore_expires=True)
+    
+    #利用urllib.request库的HTTPCookieProcessor对象来创建cookie处理器,也就CookieHandler
+    handler=urllib.request.HTTPCookieProcessor(cookie)
+    #通过CookieHandler创建opener
+    opener = urllib.request.build_opener(handler)
+    
     post_data = urllib.parse.urlencode(post_data).encode('utf-8')
     req = urllib.request.Request(url,headers=headers,data=post_data)
-    page = urllib.request.urlopen(req)
+    page = opener.open(req)
     
     return page.read().decode('utf-8')
     
 #解析返回的json数据
 def parse_result(html):
     data_json = json.loads(html)
+    print(data_json)
     print(data_json['content']['pageNo'])
     
     #第一页的话，更新下总页数
@@ -76,6 +88,8 @@ def main():
         print('hey,delete the file')
         os.remove(r'lagou_shujufenxi_data.csv')
     
+
+
     global current_page
     global total_page
     #循环所有页数，取导出数据    
@@ -91,7 +105,7 @@ def main():
         current_page += 1
         
         #这里sleep5秒，不停一下，偶尔会报错
-        time.sleep(5)
+        time.sleep(3)
     
 if __name__=='__main__':
     main()
