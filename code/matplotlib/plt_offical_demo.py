@@ -38,6 +38,7 @@ ims = []
 for add in np.arange(15):
     ims.append((plt.pcolor(x, y, base + add, norm=plt.Normalize(0, 30)),))
 
+print(ims)
 im_ani = animation.ArtistAnimation(fig2, ims, interval=50, repeat_delay=3000,
                                    blit=True)
 # To save this second animation with some metadata, use the following command:
