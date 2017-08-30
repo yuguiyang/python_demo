@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """
+<<<<<<< HEAD
 Created on Wed Aug 30 09:16:06 2017
 
 @author: yuguiyang
@@ -35,3 +36,13 @@ for item in cookie:
     print('Value = ' + item.value)
 
 #print(html)
+=======
+Created on Tue Aug 22 21:15:36 2017
+
+@author: hexo
+"""
+
+
+from urllib import request
+
+>>>>>>> 73c1ef0f09e6b37143cd18a4ca23cdd5fe696552
